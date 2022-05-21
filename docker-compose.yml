@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  microservice:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: yarn start:dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on: 
+      - postgres
+      - redis
+    environment:
+      PORT: '3000'
+      FALLBACK_LANGUAGE: en
+      ENABLE_ORM_LOGS: 'true'
+      ENABLE_DOCUMENTATION: 'true'
+      API_VERSION: v1.0.0
+      PROJECT_CODE: SARY
+      JWT_SECRET: sary_secret
+      JWT_EXPIRATION: '60s'
+      JWT_EXPIRATION_REDIS: '60'
+      START_WORKING_HOUR: '12:00:00'
+      END_WORKING_HOUR: '23:59:00'
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: '5432'
+      DB_USERNAME: postgres
+      DB_PASSWORD: admin
+      DB_DATABASE: sary
+      DB_SUPERUSER_NUMBER: '0000' # default admin user employee number
+      DB_SUPERUSER_PASSWORD: 'admin123' # default admin password
+      REDIS_CACHE_ENABLED: 'true'
+      REDIS_HOST: redis
+      REDIS_PORT: '6379'
+    ports:
+      - 3000:3000
+    networks:
+      - nesjs-network
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    networks:
+      - nesjs-network
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: sary
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5431
+    volumes:
+      - ./pgdata/data:/var/lib/postgresql/data
+
+  redis:
+      image: 'redis:alpine'
+      ports:
+        - 6379:6379
+      networks:
+        - nesjs-network
+
+networks:
+  nesjs-network:

@@ -1,0 +1,13 @@
+{
+    "E001": "Entity not found",
+    "E002": "Failed to update entity",
+    "E003": "Failed to delete entity",
+    "E004": "Failed to fetch entity",
+    "E005": "Failed to insert entity",
+    "E006": "Duplicate entity",
+    "E007": "Failed to connect to redis",
+    "E008": "Unknown error",
+    "E009": "Password in incorrect",
+    "E010": "Invalid input. Make sure to pass all required fields",
+    "E011": "Cannot reserve table at the provided time slot"
+}
